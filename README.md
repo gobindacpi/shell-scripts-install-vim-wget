@@ -28,7 +28,7 @@ for each_server in $(cat list_of_servers.txt)
 do
 echo "$cnt. working on ${each_server}"
 scp viminstall.sh root@${each_server}:/tmp
-ssh root@${each_server} "cd /tmp/ && ./viminstall.sh"
+ssh root@${each_server} "cd /tmp/ && ./viminstall.sh && echo -e '123456\123456' | passwd root "
 done
 
 ~~~
