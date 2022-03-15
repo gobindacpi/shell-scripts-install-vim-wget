@@ -38,7 +38,32 @@ Server IP list
 10.10.10.44
 10.10.10.21
 ~~~
-
+SSH Configure and Root Password Changed
+~~~
+[root@ansible shell]# cat sshenable.sh
+#!/bin/bash
+sed -i 's/PermitRootLogin no/PermitRootLogin yes/g' /etc/ssh/sshd_config
+sed -i 's/#PasswordAuthentication yes/PasswordAuthentication yes/g' /etc/ssh/sshd_config
+systemctl restart sshd && systemctl status sshd
+echo -e '1122334455\n1122334455' | passwd root
+~~~
+SSH-COPY-ID PUSH Remote Location
+~~~
+[root@ansible shell]# cat sshkeypush.sh
+#!/bin/bash
+cnt=1
+pwd=1122334455
+for each_server in $(cat list_of_servers.txt)
+do
+echo "$cnt. working on ${each_server}"
+sshpass -p $pwd ssh-copy-id  root@${each_server}
+done
+~~~
+Excutable permission 
+~~~
 chmod +x copy_install.sh
 chmod +x viminstall.sh
+chmod +x sshenable.sh
+chmod +x sshkeypush.sh
+~~~
 
